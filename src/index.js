@@ -3,6 +3,10 @@ import { LayoutManager, ResourceLoader } from "../shared/sources/libs";
 import { Application } from "../shared/sources/extensions";
 import Game from "./game";
 
+/* To prevent context menu for PC mouse right click
+   because this event will be used to set a flag on the Minesweeper grid */
+document.addEventListener('contextmenu', event => event.preventDefault());
+
 /* Create an instance of game, initialize it and set game config */
 const game = new Game();
 game.initialize();

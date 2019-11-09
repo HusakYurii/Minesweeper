@@ -12,11 +12,6 @@ const game = new Game();
 game.initialize();
 game.useConfig(gameConfig);
 
-/* just for development mode */
-if(gameConfig.debuggerMode){
-  window.game = game;
-}
-
 /* Create an instance of PIXI.Application. Use the game application config for it */
 const app = new Application(applicationConfig);
 app.stage.addChild(game.controller.view);
@@ -41,6 +36,15 @@ layoutManager.on("resize", ({ globalSizes, recalculatedSizes }) => {
   updateRenderSizes(recalculatedSizes);
   game.resize(recalculatedSizes);
 });
+
+/* just for development mode */
+if(gameConfig.debuggerMode){
+  window.game = {
+    controller: game.controller,
+    pixiStage: app.stage,
+    layoutManager
+  };
+}
 
 /* Use the resources config to add all assets data to a loader. */
 const loader = new ResourceLoader();

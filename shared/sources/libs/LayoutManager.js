@@ -18,8 +18,9 @@ export default class LayoutManager extends Emitter {
 
   resizeView() {
     const { innerWidth, innerHeight } = window;
-    let { gameW, gameH } = this.baseSize;
-    let width, height;
+    let { width, height } = this.baseSize;
+    let gameW = 0;
+    let gameH = 0;
 
     if ( innerHeight > innerWidth ) {  //portrait
       gameW = width | 0;

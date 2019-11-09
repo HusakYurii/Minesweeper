@@ -1,0 +1,1 @@
+All files which are used as templates for HtmlWebpackPlugin are stored here

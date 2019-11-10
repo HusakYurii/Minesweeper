@@ -1,3 +1,6 @@
+import Engine from "./engine";
+
+
 export default class Controller {
   constructor() {
     this.model = null;
@@ -10,22 +13,23 @@ export default class Controller {
   }
 
   useConfig(config) {
+    const initializeedMap = Engine.initializeMap(config);
     this.model.parseConfig(config);
   }
 
-  setResources(res){
+  setResources(res) {
     this.view.setResources(res);
-}
+  }
 
-  resize(sizes) {
-
+  resize({ width, height }) {
+    this.view.position.set(width / 2, height / 2);
   }
 
   update(delta) {
 
   }
 
-  run(){
+  run() {
 
   }
 }

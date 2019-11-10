@@ -9,7 +9,7 @@ export default class Cell extends Factory.Sprite {
   /**
    * @param {PIXI.Texture} texture
    * @param {CellModel} model*/
-  constructor(texture, { col, row, text, isMine, isRevealed, isFlagged }) {
+  constructor(texture, { col, row, text, isMine, isRevealed, isFlagged, isEmpty }) {
     super(texture);
 
     this.col = col;
@@ -18,6 +18,7 @@ export default class Cell extends Factory.Sprite {
     this.isMine = isMine;
     this.isRevealed = isRevealed;
     this.isFlagged = isFlagged;
+    this.isEmpty = isEmpty;
   }
 
   reveal(textures, styles) {

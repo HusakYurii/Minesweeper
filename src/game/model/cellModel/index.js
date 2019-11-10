@@ -16,5 +16,6 @@ export default class CellModel {
     this.isMine = isMine;
     this.isRevealed = false;
     this.isFlagged = false;
+    this.isEmpty = (!isMine && !!text.trim());
   }
 }

@@ -3,8 +3,8 @@
   * otherwise grid will be set as default 9 by 9 with 10 mines on it */
 export default {
   "name": "Minesweeper",
-  "debuggerMode": true,
-  "setGridManually": true,
+  "debuggerMode": false,
+  "setGridManually": false,
   // basically it is a with of a square
   "gridSize": 750,
   "defaultGrid": {

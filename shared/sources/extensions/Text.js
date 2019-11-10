@@ -8,6 +8,8 @@ import * as PIXI from "pixi.js";
 export default class Text extends PIXI.Text {
   constructor(text, styles) {
     super(text, styles);
+
+    this.anchor.set(0.5);
   }
 
   /** We do not heed to change it directly

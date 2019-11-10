@@ -65,6 +65,7 @@ export default class Engine {
         history.push({ row, col });
       }
     }
+
     return arr;
   }
 
@@ -75,7 +76,7 @@ export default class Engine {
   static analyzeMap(arr) {
     return arr.map((row, rowIndx) => {
       return row.map((val, colIndx) => {
-        if ( val < 0 ) return val;
+        if ( isMine(arr, rowIndx, colIndx) ) return val;
         else return this.countMines(arr, rowIndx, colIndx);
       });
     });
@@ -88,6 +89,7 @@ export default class Engine {
    * @return {Number} amount of mines */
   static countMines(arr, rowIndx, colIndx) {
     let mines = 0;
+
     [ -1, 0, +1 ].forEach((rowOffset) => {
       [ -1, 0, +1 ].forEach((colOffset) => {
         const currRow = rowIndx + rowOffset;

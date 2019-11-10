@@ -1,4 +1,4 @@
-import { getRndInt, isValid, isMine } from "./helpers";
+import { getRndInt, isValid, isMine, isRevealed } from "./helpers";
 
 /**
  * @class Engine
@@ -90,8 +90,8 @@ export default class Engine {
   static countMines(arr, rowIndx, colIndx) {
     let mines = 0;
 
-    [ -1, 0, +1 ].forEach((rowOffset) => {
-      [ -1, 0, +1 ].forEach((colOffset) => {
+    this.rowOffsets.forEach((rowOffset) => {
+      this.colOffsets.forEach((colOffset) => {
         const currRow = rowIndx + rowOffset;
         const currCol = colIndx + colOffset;
         if ( isValid(arr, currRow, currCol) && isMine(arr, currRow, currCol) ) {
@@ -103,11 +103,48 @@ export default class Engine {
     return mines;
   }
 
+  /** To check a selected cell on the grid. If it is a mine return a message,
+   * otherwise scan the grid and collect data
+   * @param {Array<CellModel>} map - map of cells data
+   * @param {Number} row
+   * @param {Number} col
+   * @return {String|Array} */
   static checkSelectedCell(map, row, col) {
-    return isMine(map, row, col) ? "mine" : this.scanField(map, row, col);
+    return isMine(map, row, col) ? Engine.MINE : this.scanField(map, row, col);
   }
 
-  static scanField(arr, row, col){
+  /** To scan the grid recursively and collect data
+   * @param {Array<CellModel>} map - map of cells data
+   * @param {Number} row
+   * @param {Number} col
+   * @return {Array} */
+  static scanField(map, row, col) {
+    const result = [];
+    if ( !isValid(map, row, col) || isMine(map, row, col) || isRevealed(map, row, col) ) {
+      return result;
+    }
 
+    const cell = map[ row ][ col ];
+    cell.isRevealed = true;
+    result.push(cell);
+
+    if ( !cell.isEmpty ) {
+      return result;
+    }
+
+    this.rowOffsets.forEach((rowOffset) => {
+      this.colOffsets.forEach((colOffset) => {
+        const nextRow = row + rowOffset;
+        const nextCol = col + colOffset;
+        const scanned = this.scanField(map, nextRow, nextCol);
+        result.push(...scanned);
+      });
+    });
+
+    return result;
   }
 }
+
+Engine.rowOffsets = [ -1, 0, +1 ];
+Engine.colOffsets = [ -1, 0, +1 ];
+Engine.MINE = "MINE";

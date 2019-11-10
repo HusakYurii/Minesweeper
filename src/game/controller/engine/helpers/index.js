@@ -15,9 +15,17 @@ const isRevealed = (arr, row, col) => {
   return arr[ row ][ col ].isRevealed;
 };
 
+const isFlagged = (arr, row, col) => {
+  return arr[ row ][ col ].isFlagged;
+};
+
+const isProtected = (arr, row, col) => {
+  return isRevealed(arr, row, col) || isFlagged(arr, row, col);
+};
+
 export {
+  isProtected,
   getRndInt,
-  isRevealed,
   isValid,
   isMine
-}
+};

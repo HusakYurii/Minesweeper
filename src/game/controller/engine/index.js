@@ -1,4 +1,4 @@
-import { getRndInt, isValid, isMine, isRevealed } from "./helpers";
+import { getRndInt, isValid, isMine, isProtected } from "./helpers";
 
 /**
  * @class Engine
@@ -120,7 +120,7 @@ export default class Engine {
    * @return {Array} */
   static scanField(map, row, col) {
     const result = [];
-    if ( !isValid(map, row, col) || isMine(map, row, col) || isRevealed(map, row, col) ) {
+    if ( !isValid(map, row, col) || isMine(map, row, col) || isProtected(map, row, col) ) {
       return result;
     }
 

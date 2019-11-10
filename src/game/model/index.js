@@ -39,4 +39,15 @@ export default class Model {
       });
     });
   }
+
+  toggleCellFlag(row, col){
+    const cell = this.grid.map[row][col];
+    cell.isFlagged = !cell.isFlagged;
+  }
+
+  get allMines(){
+    return this.grid.map.map((row) => {
+      return row.filter((cell) => !!cell.isMine);
+    })
+  }
 }

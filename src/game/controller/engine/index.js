@@ -103,4 +103,11 @@ export default class Engine {
     return mines;
   }
 
+  static checkSelectedCell(map, row, col) {
+    return isMine(map, row, col) ? "mine" : this.scanField(map, row, col);
+  }
+
+  static scanField(arr, row, col){
+
+  }
 }

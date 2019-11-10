@@ -20,11 +20,18 @@ export default class Cell extends Factory.Sprite {
     this.isFlagged = isFlagged;
   }
 
-  changeState(texture) {
-    this.texture = texture;
+  reveal(textures, styles) {
     this.isRevealed = true;
-    if ( !this.isMine ) {
-      this.addChild(new Factory.Text(this.text));
-    }
+    this.texture = this.isMine ? textures.get("mine") : textures.get("empty");
+
+    const style = { ...styles.common, ...styles[ this.text ] };
+    this.addChild(new Factory.Text(this.text, style));
+  }
+
+  toggleFlag(textures) {
+    if ( this.isRevealed ) return;
+
+    this.isFlagged = !this.isFlagged;
+    this.texture = this.isFlagged ? textures.get("flag") : textures.get("closed");
   }
 }

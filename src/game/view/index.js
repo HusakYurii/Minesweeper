@@ -13,6 +13,7 @@ export default class View extends Factory.Container {
     this.flagTimeout = 0;
     this.timePassed = 0;
 
+    this.data = null;
     this.grid = null;
     this.resPack = null;
   }
@@ -21,8 +22,9 @@ export default class View extends Factory.Container {
     this.resPack = res;
   }
 
-  setTimingData({ flagRequestTimeout, doubleTapTimeout }) {
-    this.doubleTapTimeout = doubleTapTimeout;
+  setViewData(data) {
+    this.data = data;
+    const { timing: { flagRequestTimeout } } = data;
     this.flagTimeout = flagRequestTimeout;
   }
 
@@ -51,8 +53,8 @@ export default class View extends Factory.Container {
 
     this.grid.cells = map.map((row, i) => {
       return row.map((cellModel, j) => {
-        const x = ( gridWidth / 2 ) - ( width * j );
-        const y = ( gridHeight / 2 ) - ( height * i );
+        const x = -( gridWidth / 2 ) + ( width * j );
+        const y = -( gridHeight / 2 ) + ( height * i );
         const cell = new Cell(texture, cellModel);
         cell.position.set(x, y);
         return cell;
@@ -104,7 +106,7 @@ export default class View extends Factory.Container {
 
   /** For mouse left click on PC
    *  @param {Event} */
-  onClick({data}) {
+  onClick({ data }) {
     const { x, y } = data.getLocalPosition(this.grid);
     const { row, col } = this.convertLocToIndex(x, y);
     this.emit("clickOnCell", { row, col });
@@ -112,7 +114,7 @@ export default class View extends Factory.Container {
 
   /** For mouse right click on PC
    *  @param {Event} */
-  onRightClick({data}) {
+  onRightClick({ data }) {
     const { x, y } = data.getLocalPosition(this.grid);
     const { row, col } = this.convertLocToIndex(x, y);
     this.emit("flagRequested", { row, col });
@@ -141,4 +143,24 @@ export default class View extends Factory.Container {
     return { row, col };
   }
 
+  revealCells(cells) {
+    cells.forEach(({ row, col }) => {
+      const cell = this.grid.cells[ row ][ col ];
+      cell.reveal(this.resPack, this.data.styles);
+    });
+  }
+
+  toggleCellFlag(row, col) {
+    this.grid.cells[ row ][ col ].toggleFlag(this.resPack);
+  }
+
+  showPopUp(isLose) {
+    if ( isLose ) {
+      this.revealCells(this.grid.cells.flat());
+      this.grid.off("touchstart", this.onTouchStart, this);
+      this.grid.off("touchend", this.onTouchEnd, this);
+      this.grid.off("click", this.onClick, this);
+      this.grid.off("rightclick", this.onRightClick, this);
+    }
+  }
 }

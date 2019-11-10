@@ -2,7 +2,7 @@ import CellModel from "./cellModel";
 
 export default class Model {
   constructor() {
-    this.viewTimingData = null;
+    this.viewData = null;
     this.originalData = null;
     this.grid = {
       rows: 0,
@@ -16,7 +16,7 @@ export default class Model {
    * @param {Object} config - original config data
    * @param {Array<Array>} initializedMap - map which is prepared by Engine */
   addData(config, initializedMap) {
-    this.viewTimingData = config.viewTimingData;
+    this.viewData = config.viewData;
     this.originalData = config;
 
     this.grid = {

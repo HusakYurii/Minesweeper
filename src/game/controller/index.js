@@ -29,18 +29,25 @@ export default class Controller {
   }
 
   run() {
-    const { grid, viewTimingData } = this.model;
+    const { grid, viewData } = this.model;
     this.view.creteGrid(grid);
     this.view.addInteractivity();
-    this.view.setTimingData(viewTimingData);
-    this.view.on("flagRequested", this.onFlagRequested ,this);
-    this.view.on("clickOnCell", this.onClickOnCell ,this);
+    this.view.setViewData(viewData);
+    this.view.on("flagRequested", this.onFlagRequested, this);
+    this.view.on("clickOnCell", this.onClickOnCell, this);
   }
 
-  onFlagRequested({row, col}){
-    console.log("Controller, onFlagRequested... ", row, col);
+  onFlagRequested({ row, col }) {
+    this.view.toggleCellFlag(row, col);
   }
-  onClickOnCell({row, col}){
-    console.log("Controller, onClickOnCell... ", row, col);
+
+  onClickOnCell({ row, col }) {
+    const { grid: { map } } = this.model;
+    const result = Engine.checkSelectedCell(map, row, col);
+    if ( typeof result === "string" ) {
+      alert("gameOver");
+      this.view.showPopUp(true);
+    }
+    this.view.revealCells([ { row, col } ]);
   }
 }

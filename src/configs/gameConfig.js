@@ -3,7 +3,7 @@
   * otherwise grid will be set as default 9 by 9 with 10 mines on it */
 export default {
   "name": "Minesweeper",
-  "debuggerMode": true,
+  "debuggerMode": false,
   "setGridManually": false,
   // basically it is a with of a square
   "gridSize": 700,
@@ -25,9 +25,30 @@ export default {
     [-1, 0, 0, 0, 0, -1, 0, 0, 0, 0 ]
   ],
   // applicable only for mobile devices, time in `ms`
-  "viewTimingData": {
-    "flagRequestTimeout": 200,
-    "doubleTapTimeout": 100
+  "viewData": {
+    "timing": {
+      "flagRequestTimeout": 200,
+      "doubleTapTimeout": 100
+    },
+    "styles": {
+      "common": {
+        "fontFamily": "Helvetica",
+        "fontSize": 60,
+        "fontWeight": "bold"
+      },
+      "1": {
+        "fill": "#0328fc",
+      },
+      "2": {
+        "fill": "#3ec408",
+      },
+      "3": {
+        "fill": "#fa2828",
+      },
+      "4": {
+        "fill": "#06052e",
+      }
+    }
   },
   "popup": {
     "winPopup": {

@@ -7,7 +7,8 @@ const isValid = (arr, row, col) => {
 };
 
 const isMine = (arr, row, col) => {
-  return arr[ row ][ col ] < 0;
+  const cell = arr[ row ][ col ];
+  return !!Number(cell) ? cell < 0 : cell.isMine;
 };
 
 export {

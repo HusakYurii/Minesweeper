@@ -3,7 +3,6 @@ import CellModel from "./cellModel";
 export default class Model {
   constructor() {
     this.viewData = null;
-    this.originalData = null;
     this.grid = {
       rows: 0,
       columns: 0,
@@ -17,7 +16,6 @@ export default class Model {
    * @param {Array<Array>} initializedMap - map which is prepared by Engine */
   addData(config, initializedMap) {
     this.viewData = config.viewData;
-    this.originalData = config;
 
     this.grid = {
       gridSize: config.gridSize,
@@ -43,24 +41,43 @@ export default class Model {
   /** Toggle a cell's model flag property
    * @param {Number} row
    * @param {Number} col */
-  toggleCellFlag(row, col){
-    const cell = this.grid.collection[row][col];
+  toggleCellFlag(row, col) {
+    const cell = this.grid.collection[ row ][ col ];
     cell.isFlagged = !cell.isFlagged;
+  }
+
+  /** High order function. Just to reduce amount of repeated code
+   * @param {Function} callback
+   * @return {Array<CellModel>} */
+  getCellsByRule(callback){
+    return this.grid.collection.map((row) => {
+      return row.filter(callback);
+    });
   }
 
   /** To get all mines on filed
    * @return {Array<CellModel>}*/
-  get allMines(){
-    return this.grid.collection.map((row) => {
-      return row.filter((cell) => cell.isMine);
-    })
+  get allMines() {
+    return this.getCellsByRule((cell) => cell.isMine);
   }
 
-  isGameWon (){
-    const revealedCells = this.grid.collection.map((row) => {
-      return row.filter((cell) => cell.isRevealed);
-    });
+  /** To get all cells which is not opened yet
+   * @return {Array<CellModel>} */
+  get cellsToRevealed() {
+    return this.getCellsByRule((cell) => !cell.isRevealed);
+  }
 
-    return revealedCells
+  /** To get all cell which are going to be set ad flagged at the end of the game
+   * @return {Array<CellModel>} */
+  get cellsToFlag() {
+    return this.getCellsByRule((cell) => !cell.isFlagged);
+  }
+
+  /** To check whether game has been won
+   * @return {Boolean} */
+  get isGameWon() {
+    const mines = this.allMines.flat();
+    const cellsLeft = this.cellsToRevealed.flat();
+    return ( mines.length - cellsLeft.length ) === 0;
   }
 }

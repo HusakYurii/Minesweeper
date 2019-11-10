@@ -159,13 +159,21 @@ export default class View extends Factory.Container {
     cell.toggleFlag(this.resPack);
   }
 
-  showPopUp(isLose) {
+  /** To set flags on cells
+   * @param {Array} cells */
+  flagMines(cells){
+    cells.forEach(({ row, col }) => {
+      this.toggleCellFlag(row, col);
+    });
+  }
+
+  showPopUp(isWinStatus) {
     this.grid.off("touchstart", this.onTouchStart, this);
     this.grid.off("touchend", this.onTouchEnd, this);
     this.grid.off("click", this.onClick, this);
     this.grid.off("rightclick", this.onRightClick, this);
 
-    if ( isLose ) {
+    if ( isWinStatus ) {
 
     }
   }

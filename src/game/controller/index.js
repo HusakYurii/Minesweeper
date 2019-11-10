@@ -12,8 +12,8 @@ export default class Controller {
   }
 
   useConfig(config) {
-    const initializeedMap = Engine.initializeMap(config);
-    this.model.addData(config, initializeedMap);
+    const initializedMap = Engine.initializeMap(config);
+    this.model.addData(config, initializedMap);
   }
 
   setResources(res) {
@@ -47,8 +47,12 @@ export default class Controller {
     const result = Engine.checkSelectedCell(collection, row, col);
 
     if ( result === Engine.MINE ) {
+      this.view.showPopUp(false);
+      this.view.revealCells(this.model.allMines.flat());
+    } else if ( this.model.isGameWon ) {
+      this.view.revealCells(result);
       this.view.showPopUp(true);
-      this.view.revealCells(this.model.allMines.flat())
+      this.view.flagMines(this.model.cellsToFlag.flat())
     } else {
       this.view.revealCells(result);
     }

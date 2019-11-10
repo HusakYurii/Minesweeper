@@ -105,26 +105,26 @@ export default class Engine {
 
   /** To check a selected cell on the grid. If it is a mine return a message,
    * otherwise scan the grid and collect data
-   * @param {Array<CellModel>} map - map of cells data
+   * @param {Array<CellModel>} collection - collection of cells data
    * @param {Number} row
    * @param {Number} col
    * @return {String|Array} */
-  static checkSelectedCell(map, row, col) {
-    return isMine(map, row, col) ? Engine.MINE : this.scanField(map, row, col);
+  static checkSelectedCell(collection, row, col) {
+    return isMine(collection, row, col) ? Engine.MINE : this.scanField(collection, row, col);
   }
 
   /** To scan the grid recursively and collect data
-   * @param {Array<CellModel>} map - map of cells data
+   * @param {Array<CellModel>} arr - collection of cells data
    * @param {Number} row
    * @param {Number} col
    * @return {Array} */
-  static scanField(map, row, col) {
+  static scanField(arr, row, col) {
     const result = [];
-    if ( !isValid(map, row, col) || isMine(map, row, col) || isProtected(map, row, col) ) {
+    if ( !isValid(arr, row, col) || isMine(arr, row, col) || isProtected(arr, row, col) ) {
       return result;
     }
 
-    const cell = map[ row ][ col ];
+    const cell = arr[ row ][ col ];
     cell.isRevealed = true;
     result.push(cell);
 
@@ -136,7 +136,7 @@ export default class Engine {
       this.colOffsets.forEach((colOffset) => {
         const nextRow = row + rowOffset;
         const nextCol = col + colOffset;
-        const scanned = this.scanField(map, nextRow, nextCol);
+        const scanned = this.scanField(arr, nextRow, nextCol);
         result.push(...scanned);
       });
     });

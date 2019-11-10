@@ -38,16 +38,19 @@ export default class Controller {
   }
 
   onFlagRequested({ row, col }) {
+    this.model.toggleCellFlag(row, col);
     this.view.toggleCellFlag(row, col);
   }
 
   onClickOnCell({ row, col }) {
-    const { grid: { map } } = this.model;
-    const result = Engine.checkSelectedCell(map, row, col);
-    if ( typeof result === "string" ) {
-      alert("gameOver");
+    const { grid: { collection } } = this.model;
+    const result = Engine.checkSelectedCell(collection, row, col);
+
+    if ( result === Engine.MINE ) {
       this.view.showPopUp(true);
+      this.view.revealCells(this.model.allMines.flat())
+    } else {
+      this.view.revealCells(result);
     }
-    this.view.revealCells([ { row, col } ]);
   }
 }

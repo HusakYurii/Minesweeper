@@ -8,7 +8,7 @@ export default class Model {
       rows: 0,
       columns: 0,
       gridSize: 0,
-      map: null
+      collection: null
     };
   }
 
@@ -23,7 +23,7 @@ export default class Model {
       gridSize: config.gridSize,
       rows: initializedMap.length,
       columns: initializedMap[ 0 ].length,
-      map: this.convertMap(initializedMap)
+      collection: this.convertMap(initializedMap)
     };
   }
 
@@ -40,14 +40,27 @@ export default class Model {
     });
   }
 
+  /** Toggle a cell's model flag property
+   * @param {Number} row
+   * @param {Number} col */
   toggleCellFlag(row, col){
-    const cell = this.grid.map[row][col];
+    const cell = this.grid.collection[row][col];
     cell.isFlagged = !cell.isFlagged;
   }
 
+  /** To get all mines on filed
+   * @return {Array<CellModel>}*/
   get allMines(){
-    return this.grid.map.map((row) => {
-      return row.filter((cell) => !!cell.isMine);
+    return this.grid.collection.map((row) => {
+      return row.filter((cell) => cell.isMine);
     })
+  }
+
+  isGameWon (){
+    const revealedCells = this.grid.collection.map((row) => {
+      return row.filter((cell) => cell.isRevealed);
+    });
+
+    return revealedCells
   }
 }

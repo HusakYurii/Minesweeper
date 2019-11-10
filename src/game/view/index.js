@@ -6,10 +6,8 @@ export default class View extends Factory.Container {
     super();
 
     this.pointersIDs = [];
-    this.isDoubleTap = false;
     this.isPointerdown = false;
     this.isFlagRequested = false;
-    this.doubleTapTimeout = 0;
     this.flagTimeout = 0;
     this.timePassed = 0;
 
@@ -40,7 +38,7 @@ export default class View extends Factory.Container {
 
   /** To create actual grid of cells
    * @param {Object} model data for the grid */
-  creteGrid({ map, rows, columns, gridSize }) {
+  creteGrid({ collection, rows, columns, gridSize }) {
     this.grid = new Factory.Container();
     const texture = this.resPack.get("closed");
 
@@ -51,7 +49,7 @@ export default class View extends Factory.Container {
     this.grid.scale.set(gridSize / gridWidth);
     this.addChild(this.grid);
 
-    this.grid.cells = map.map((row, i) => {
+    this.grid.cells = collection.map((row, i) => {
       return row.map((cellModel, j) => {
         const x = -( gridWidth / 2 ) + ( width * j );
         const y = -( gridHeight / 2 ) + ( height * i );
@@ -92,6 +90,7 @@ export default class View extends Factory.Container {
   onTouchEnd({ data }) {
     if ( !this.pointersIDs.includes(data.pointerId) ) return;
     this.isPointerdown = false;
+    this.pointersIDs = [];
     this.timePassed = 0;
 
     const { x, y } = data.getLocalPosition(this.grid);
@@ -143,6 +142,8 @@ export default class View extends Factory.Container {
     return { row, col };
   }
 
+  /** To reveal all cells which were collected by engine
+   * @param {Array} cells */
   revealCells(cells) {
     cells.forEach(({ row, col }) => {
       const cell = this.grid.cells[ row ][ col ];
@@ -150,17 +151,22 @@ export default class View extends Factory.Container {
     });
   }
 
+  /** Toggle a single cell (not) to be flagged
+   * @param {Number} row
+   * @param {Number} col */
   toggleCellFlag(row, col) {
-    this.grid.cells[ row ][ col ].toggleFlag(this.resPack);
+    const cell = this.grid.cells[ row ][ col ];
+    cell.toggleFlag(this.resPack);
   }
 
   showPopUp(isLose) {
+    this.grid.off("touchstart", this.onTouchStart, this);
+    this.grid.off("touchend", this.onTouchEnd, this);
+    this.grid.off("click", this.onClick, this);
+    this.grid.off("rightclick", this.onRightClick, this);
+
     if ( isLose ) {
-      this.revealCells(this.grid.cells.flat());
-      this.grid.off("touchstart", this.onTouchStart, this);
-      this.grid.off("touchend", this.onTouchEnd, this);
-      this.grid.off("click", this.onClick, this);
-      this.grid.off("rightclick", this.onRightClick, this);
+
     }
   }
 }

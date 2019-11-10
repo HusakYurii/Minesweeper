@@ -2,6 +2,7 @@ import { Factory } from "../../../shared/sources/libs";
 
 /**
  * @class Cell
+ * @extends PIXI.Sprite
  * To hold cell's data and display different cell's states
  * */
 export default class Cell extends Factory.Sprite {

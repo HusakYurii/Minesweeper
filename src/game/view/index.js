@@ -1,6 +1,12 @@
 import { Factory } from "../../../shared/sources/libs";
 import Cell from "./Cell";
+import Popup from "./Popup";
 
+/**
+ * @class View
+ * @extends PIXI.Container
+ * Game's View
+ * */
 export default class View extends Factory.Container {
   constructor() {
     super();
@@ -11,9 +17,13 @@ export default class View extends Factory.Container {
     this.flagTimeout = 0;
     this.timePassed = 0;
 
-    this.data = null;
+    this.viewConfig = null;
     this.grid = null;
     this.resPack = null;
+    this.popUp = null;
+
+    this.isGameOver = false;
+    this.gameStatus = false;
   }
 
   setResources(res) {
@@ -21,18 +31,26 @@ export default class View extends Factory.Container {
   }
 
   setViewData(data) {
-    this.data = data;
-    const { timing: { flagRequestTimeout } } = data;
-    this.flagTimeout = flagRequestTimeout;
+    this.viewConfig = data;
+    const { timing } = data;
+    this.flagTimeout = timing.flagRequestTimeout;
+    this.popupTimout = timing.popupTimeout;
   }
 
   /** @param {Number} delta time which is set by PIXI.Tiker*/
   update(delta) {
-    /* To make sure that it was click to reveal the cell
+    /* To make sure that it was long tap to reveal the cell
     * timePassed must be less than flagTimeout */
     if ( this.isPointerdown ) {
       this.timePassed += ( delta * 16.777 ); // to convert it to ms
       this.isFlagRequested = ( this.timePassed > this.flagTimeout );
+    }
+
+    if ( this.isGameOver && !this.popUp ) {
+      this.popupTimout -= delta * 16.777;
+      if ( this.popupTimout <= 0 ) {
+        this.showPopUp();
+      }
     }
   }
 
@@ -74,6 +92,15 @@ export default class View extends Factory.Container {
     /* PC events */
     this.grid.on("click", this.onClick, this);
     this.grid.on("rightclick", this.onRightClick, this);
+  }
+
+  /** Turn all interactivity off */
+  removeInteractivity() {
+    this.grid.interactive = false;
+    this.grid.off("touchstart", this.onTouchStart, this);
+    this.grid.off("touchend", this.onTouchEnd, this);
+    this.grid.off("click", this.onClick, this);
+    this.grid.off("rightclick", this.onRightClick, this);
   }
 
   /** For touch start event on mobile devices
@@ -147,7 +174,7 @@ export default class View extends Factory.Container {
   revealCells(cells) {
     cells.forEach(({ row, col }) => {
       const cell = this.grid.cells[ row ][ col ];
-      cell.reveal(this.resPack, this.data.styles);
+      cell.reveal(this.resPack, this.viewConfig.styles);
     });
   }
 
@@ -161,20 +188,47 @@ export default class View extends Factory.Container {
 
   /** To set flags on cells
    * @param {Array} cells */
-  flagMines(cells){
+  flagMines(cells) {
     cells.forEach(({ row, col }) => {
       this.toggleCellFlag(row, col);
     });
   }
 
-  showPopUp(isWinStatus) {
-    this.grid.off("touchstart", this.onTouchStart, this);
-    this.grid.off("touchend", this.onTouchEnd, this);
-    this.grid.off("click", this.onClick, this);
-    this.grid.off("rightclick", this.onRightClick, this);
+  /** To disable view class at the end of the game */
+  gameOver(isWinStatus) {
+    this.removeInteractivity();
+    this.gameStatus = isWinStatus;
+    this.isGameOver = true;
+  }
 
-    if ( isWinStatus ) {
+  /** To show pup-up at the end */
+  showPopUp() {
+    const { popup } = this.viewConfig;
+    this.popUp = new Popup(popup, this.gameStatus);
+    this.popUp.once("onButtonClick", () => {
+      this.emit("restartGame");
+    });
 
-    }
+    this.addChild(this.popUp);
+  }
+
+  /** To clean view data before destroying */
+  cleanView(){
+    this.grid.removeChildren();
+    this.removeChildren();
+
+    this.pointersIDs = [];
+    this.isPointerdown = false;
+    this.isFlagRequested = false;
+    this.flagTimeout = 0;
+    this.timePassed = 0;
+
+    this.viewConfig = null;
+    this.grid = null;
+    this.resPack = null;
+    this.popUp = null;
+
+    this.isGameOver = false;
+    this.gameStatus = false;
   }
 }

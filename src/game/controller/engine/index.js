@@ -126,7 +126,7 @@ export default class Engine {
 
     const cell = arr[ row ][ col ];
     cell.isRevealed = true;
-    result.push(cell);
+    result.push({ ...cell });
 
     if ( !cell.isEmpty ) {
       return result;

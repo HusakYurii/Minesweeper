@@ -1,7 +1,7 @@
 import { Factory } from "../../../shared/sources/libs";
 
 /**
- * @class Popup extends Container
+ * @class Popup extends PIXI.Container
  * */
 export default class Popup extends Factory.Container {
 

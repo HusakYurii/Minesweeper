@@ -38,6 +38,14 @@ export default class Model {
     });
   }
 
+  /** After engine has calculated data, update the model */
+  updateCellsData(result = []){
+    result.forEach(val => {
+      let cell = this.grid.collection[ val.row ][ val.col ];
+      cell = Object.assign(cell, val);
+    })
+  }
+
   /** Toggle a cell's model flag property
    * @param {Number} row
    * @param {Number} col */
@@ -79,5 +87,16 @@ export default class Model {
     const mines = this.allMines.flat();
     const cellsLeft = this.cellsToRevealed.flat();
     return ( mines.length - cellsLeft.length ) === 0;
+  }
+
+  /** To clean model before destroying */
+  cleanModel(){
+    this.viewData = null;
+    this.grid = {
+      rows: 0,
+      columns: 0,
+      gridSize: 0,
+      collection: null
+    };
   }
 }

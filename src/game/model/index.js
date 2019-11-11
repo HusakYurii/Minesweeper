@@ -3,6 +3,7 @@ import CellModel from "./cellModel";
 export default class Model {
   constructor() {
     this.viewData = null;
+    this.flagsMumber = 0;
     this.grid = {
       rows: 0,
       columns: 0,
@@ -23,6 +24,8 @@ export default class Model {
       columns: initializedMap[ 0 ].length,
       collection: this.convertMap(initializedMap)
     };
+
+    this.flagsMumber = this.allMines.flat().length;
   }
 
   /** To convert raw map data into structured data for cells
@@ -36,6 +39,12 @@ export default class Model {
         return new CellModel(isMine, text, rowIndx, colIndx);
       });
     });
+  }
+
+  /** To take number of flags left
+   * @return {Number} */
+  get flagsLeft() {
+    return (this.flagsMumber - this.flaggedCells.flat().length);
   }
 
   /** After engine has calculated data, update the model */
@@ -75,10 +84,16 @@ export default class Model {
     return this.getCellsByRule((cell) => !cell.isRevealed);
   }
 
-  /** To get all cell which are going to be set ad flagged at the end of the game
+  /** To get all cell which are not flagged yet
    * @return {Array<CellModel>} */
-  get cellsToFlag() {
+  get totFlaggedCells() {
     return this.getCellsByRule((cell) => !cell.isFlagged);
+  }
+
+  /** To get all cells which are already flagged
+   * @return {Array<CellModel>} */
+  get flaggedCells(){
+    return this.getCellsByRule((cell) => cell.isFlagged);
   }
 
   /** To check whether game has been won
@@ -92,6 +107,7 @@ export default class Model {
   /** To clean model before destroying */
   cleanModel(){
     this.viewData = null;
+    this.flagsMumber = 0;
     this.grid = {
       rows: 0,
       columns: 0,

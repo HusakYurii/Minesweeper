@@ -1,5 +1,6 @@
 import { Emitter } from "../../../shared/sources/extensions";
 import Engine from "./engine";
+import { gameConfig, gameViewConfig } from "../../configs";
 
 export default class Controller extends Emitter {
   constructor() {
@@ -14,10 +15,18 @@ export default class Controller extends Emitter {
     this.view = view;
   }
 
-  useConfig(config) {
-    const initializedMap = Engine.initializeMap(config);
-    this.model.addData(config, initializedMap);
-    this.view.setViewData(config.viewData);
+  useConfig({ gameConfig, gameViewConfig }) {
+    const initializedMap = Engine.initializeMap(gameConfig);
+    this.model.addData(gameConfig, initializedMap);
+
+    const { flagsLeft } = this.model;
+    const { timing } = gameConfig;
+
+    this.view.setViewData({
+      ...gameViewConfig,
+      flags: flagsLeft,
+      timing
+    });
   }
 
   setResources(res) {
@@ -25,7 +34,9 @@ export default class Controller extends Emitter {
   }
 
   resize({ width, height }) {
+    const isLanscape = width > height;
     this.view.position.set(width / 2, height / 2);
+    this.view.rotation = isLanscape ? -Math.PI/2 : 0;
   }
 
   update(delta) {
@@ -39,6 +50,8 @@ export default class Controller extends Emitter {
     this.view.on("flagRequested", this.onFlagRequested, this);
     this.view.on("clickOnCell", this.onClickOnCell, this);
     this.view.once("restartGame", this.onRestartGame, this);
+
+    this.view.createHeader();
   }
 
   onRestartGame() {
@@ -52,8 +65,15 @@ export default class Controller extends Emitter {
   /** To react on user interactivity and
    * update model and view */
   onFlagRequested({ row, col }) {
+
     this.model.toggleCellFlag(row, col);
-    this.view.toggleCellFlag(row, col);
+
+    if(this.model.flagsLeft < 0){
+      this.model.toggleCellFlag(row, col);
+    } else {
+      this.view.toggleCellFlag(row, col);
+      this.view.updateFlagsNumber(this.model.flagsLeft)
+    }
   }
 
   /** To react on user interactivity and use engine to calculate game's data,
@@ -69,7 +89,7 @@ export default class Controller extends Emitter {
       this.model.updateCellsData(result);
       this.view.revealCells(result);
       this.view.gameOver(false);
-      this.view.flagMines(this.model.cellsToFlag.flat());
+      this.view.flagMines(this.model.totFlaggedCells.flat());
     } else {
       this.model.updateCellsData(result);
       this.view.revealCells(result);

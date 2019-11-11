@@ -1,6 +1,7 @@
 import { Factory } from "../../../shared/sources/libs";
 import Cell from "./Cell";
 import Popup from "./Popup";
+import Header from "./Header";
 
 /**
  * @class View
@@ -21,6 +22,7 @@ export default class View extends Factory.Container {
     this.grid = null;
     this.resPack = null;
     this.popUp = null;
+    this.header = null;
 
     this.isGameOver = false;
     this.gameStatus = false;
@@ -38,7 +40,7 @@ export default class View extends Factory.Container {
   }
 
   /** @param {Number} delta time which is set by PIXI.Tiker*/
-  update(delta) {
+  update(delta = 1) {
     /* To make sure that it was long tap to reveal the cell
     * timePassed must be less than flagTimeout */
     if ( this.isPointerdown ) {
@@ -52,6 +54,25 @@ export default class View extends Factory.Container {
         this.showPopUp();
       }
     }
+
+    if ( this.header && !this.isGameOver ) {
+      this.header.update(delta);
+    }
+  }
+
+  createHeader() {
+    const { header, flags } = this.viewConfig;
+    this.header = new Header({ header, textures: this.resPack });
+    this.addChild(this.header);
+
+    this.header.y = -(( this.grid.height - this.header.height ) / 2 + 150);
+
+    this.header.updateTimeNumber();
+    this.updateFlagsNumber(flags);
+  }
+
+  updateFlagsNumber(number) {
+    this.header.updateFlagsNumber(number);
   }
 
   /** To create actual grid of cells
@@ -213,7 +234,7 @@ export default class View extends Factory.Container {
   }
 
   /** To clean view data before destroying */
-  cleanView(){
+  cleanView() {
     this.grid.removeChildren();
     this.removeChildren();
 

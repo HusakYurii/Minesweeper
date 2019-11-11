@@ -10,12 +10,12 @@ export default class Popup extends Factory.Container {
 
     const status = isWinStatus ? "win" : "lose";
 
-    const popupIcon = Popup.fromConfig(popup);
-    const popupText = Popup.createText(popup.text[ status ], popup.styles);
+    const popupIcon = Factory.createFromGraphics(popup);
+    const popupText = Factory.createTextFromConfig(popup.text[ status ], popup.styles);
     popupIcon.addChild(popupText);
 
-    const popupButton = Popup.fromConfig(button);
-    const buttonText = Popup.createText(button.text, button.styles);
+    const popupButton = Factory.createFromGraphics(button);
+    const buttonText = Factory.createTextFromConfig(button.text, button.styles);
     popupButton.addChild(buttonText);
 
     this.addChild(popupIcon, popupButton);
@@ -26,21 +26,21 @@ export default class Popup extends Factory.Container {
     });
   }
 
-  static fromConfig({ width, height, radius, color, position: { x, y } = {} } = {}) {
-    const texture = new Factory.Graphics()
-      .beginFill(color)
-      .drawRoundedRect(0, 0, width, height, radius)
-      .endFill()
-      .generateTexture();
-
-    const sprite = new Factory.Sprite(texture);
-    sprite.position.set(x, y);
-    return sprite;
-  }
-
-  static createText(text, { position: { x, y }, ...styles } = {}) {
-    const txt = new Factory.Text(text, styles);
-    txt.position.set(x, y);
-    return txt;
-  }
+  // static fromConfig({ width, height, radius, color, position: { x, y } = {} } = {}) {
+  //   const texture = new Factory.Graphics()
+  //     .beginFill(color)
+  //     .drawRoundedRect(0, 0, width, height, radius)
+  //     .endFill()
+  //     .generateTexture();
+  //
+  //   const sprite = new Factory.Sprite(texture);
+  //   sprite.position.set(x, y);
+  //   return sprite;
+  // }
+  //
+  // static createText(text, { position: { x, y }, ...styles } = {}) {
+  //   const txt = new Factory.Text(text, styles);
+  //   txt.position.set(x, y);
+  //   return txt;
+  // }
 }

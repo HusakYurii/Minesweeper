@@ -4,7 +4,7 @@ const MAP = {"0": "zero","1": "one","2": "two","3": "three","4": "four","5": "fi
 
 /** @class Header
  * @extends PIXI.Container
- * Game's View Header
+ * Game's Header which is counting time and how many flags are left
  * */
 export default class Header extends Factory.Container {
   constructor({ header, textures }) {
@@ -21,21 +21,26 @@ export default class Header extends Factory.Container {
     this.initializeHeader(header);
   }
 
+  /** To create all members of Header instance class
+   * @param {Object} header - config which is used to create all members */
   initializeHeader(header) {
-    const { flagsCounter, menuButton, timer, ...bgCnfig } = header;
-    const headerBackground = Factory.createFromGraphics(bgCnfig);
+    const { flagsCounter, menuButton, timer, ...bgConfig } = header;
+    const { styles, text, ...buttonConfig } = menuButton;
+
+    const headerBackground = Factory.createFromGraphics(bgConfig);
 
     this.flagsCounter = Factory.createFromGraphics(flagsCounter);
     this.gameTimer = Factory.createFromGraphics(timer);
 
-    const { styles, text, ...buttonCnfig } = menuButton;
     const buttonText = Factory.createTextFromConfig(text, styles);
-    this.menuButton = Factory.createFromGraphics(buttonCnfig);
+    this.menuButton = Factory.createFromGraphics(buttonConfig);
     this.menuButton.addChild(buttonText);
 
     this.addChild(headerBackground, this.flagsCounter, this.gameTimer, this.menuButton);
   }
 
+  /** To create a counter with 3 digits for a given member
+   * @param {Object} who */
   createSetOfDigits(who) {
     const { width, height } = who;
     const digitW = width / 3;
@@ -50,6 +55,8 @@ export default class Header extends Factory.Container {
     });
   }
 
+  /** As number of flags has been changed, update counter
+   * @param {Number} [numb = 0] */
   updateFlagsNumber(numb = 0) {
     if ( !this.flagsCounter.digits ) {
       this.createSetOfDigits(this.flagsCounter);
@@ -57,6 +64,8 @@ export default class Header extends Factory.Container {
     this.updateNumbers(this.flagsCounter, numb);
   }
 
+  /** Every second update the timer's counter
+   * @param {Number} [numb = 0] */
   updateTimeNumber(numb = 0){
     if ( !this.gameTimer.digits ) {
       this.createSetOfDigits(this.gameTimer);
@@ -64,6 +73,9 @@ export default class Header extends Factory.Container {
     this.updateNumbers(this.gameTimer, numb);
   }
 
+  /** Update view part of given counter
+   * @param {Object} counter
+   * @param {Number|String} numb */
   updateNumbers(counter, numb){
     numb = numb >= 100 ? String(numb) : numb >= 10 ? `0${numb}` : `00${numb}`;
 

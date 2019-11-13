@@ -105,16 +105,21 @@ export default class Engine {
 
   /** To check a selected cell on the grid. If it is a mine return a message,
    * otherwise scan the grid and collect data
-   * @param {Array<CellModel>} collection - collection of cells data
+   * @param {Array<Array>} collection - collection of cells data
    * @param {Number} row
    * @param {Number} col
    * @return {String|Array} */
   static checkSelectedCell(collection, row, col) {
-    return isMine(collection, row, col) ? Engine.MINE : this.scanField(collection, row, col);
+
+    if(isMine(collection, row, col)) {
+      return Engine.MINE
+    }
+
+    return this.scanField(this.copyCollection(collection), row, col);
   }
 
   /** To scan the grid recursively and collect data
-   * @param {Array<CellModel>} arr - collection of cells data
+   * @param {Array<Array>} arr - copy of collection of cells data
    * @param {Number} row
    * @param {Number} col
    * @return {Array} */
@@ -126,7 +131,7 @@ export default class Engine {
 
     const cell = arr[ row ][ col ];
     cell.isRevealed = true;
-    result.push({ ...cell });
+    result.push(cell);
 
     if ( !cell.isEmpty ) {
       return result;
@@ -142,6 +147,15 @@ export default class Engine {
     });
 
     return result;
+  }
+
+  /** We do not want mutate data directly but work with copy of that and
+   * @param {Array<Array>} collection
+   * @return {Array<Array>} */
+  static copyCollection(collection){
+    return collection.map((arr) => {
+      return arr.map(val => ({ ...val }));
+    })
   }
 }
 

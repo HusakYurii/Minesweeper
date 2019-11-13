@@ -25,22 +25,4 @@ export default class Popup extends Factory.Container {
       this.emit("onButtonClick");
     });
   }
-
-  // static fromConfig({ width, height, radius, color, position: { x, y } = {} } = {}) {
-  //   const texture = new Factory.Graphics()
-  //     .beginFill(color)
-  //     .drawRoundedRect(0, 0, width, height, radius)
-  //     .endFill()
-  //     .generateTexture();
-  //
-  //   const sprite = new Factory.Sprite(texture);
-  //   sprite.position.set(x, y);
-  //   return sprite;
-  // }
-  //
-  // static createText(text, { position: { x, y }, ...styles } = {}) {
-  //   const txt = new Factory.Text(text, styles);
-  //   txt.position.set(x, y);
-  //   return txt;
-  // }
 }

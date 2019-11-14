@@ -84,9 +84,24 @@ export default class Header extends Factory.Container {
     });
   }
 
+  menuWasClicked(){
+    this.emit("menuClick")
+  }
+
+  /**  Add all interactivity as the game is resumed */
+  addInteractivity(){
+    this.menuButton.interactive = true;
+    this.menuButton.on("pointerdown", this.menuWasClicked, this );
+  }
+
+  /**  It removes all interactivity as the game is paused */
+  removeInteractivity(){
+    this.menuButton.interactive = false;
+    this.menuButton.off("pointerdown", this.menuWasClicked, this);
+  }
+
   update(delta) {
-    const time = delta * 16.777;
-    this._timer += time;
+    this._timer += (delta * 16.777);
     if(this._timer >= 1000){
       this._timer = 0;
       this._timeCounter += 1;

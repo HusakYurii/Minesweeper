@@ -24,6 +24,7 @@ export default class View extends Factory.Container {
     this.popUp = null;
     this.header = null;
 
+    this.isPause = true;
     this.isGameOver = false;
     this.gameStatus = false;
   }
@@ -39,8 +40,18 @@ export default class View extends Factory.Container {
     this.popupTimout = timing.popupTimeout;
   }
 
+  /** Resize hook which is being called while window resizing
+   * @param {Number} width - renderer view width
+   * @param {Number} height - renderer view height */
+  resize({ width, height }) {
+    const isLandscape = width > height;
+    const currHeight = isLandscape ? width : height;
+    this.header.y = -( currHeight - this.header.height - 100 ) / 2;
+  }
+
   /** @param {Number} delta time which is set by PIXI.Tiker*/
   update(delta = 1) {
+    if ( this.isPause ) return;
     /* To make sure that it was long tap to reveal the cell
     * timePassed must be less than flagTimeout */
     if ( this.isPointerdown ) {
@@ -48,31 +59,76 @@ export default class View extends Factory.Container {
       this.isFlagRequested = ( this.timePassed > this.flagTimeout );
     }
 
-    if ( this.isGameOver && !this.popUp ) {
+    if ( this.isGameOver ) {
       this.popupTimout -= delta * 16.777;
       if ( this.popupTimout <= 0 ) {
         this.showPopUp();
       }
     }
 
-    if ( this.header && !this.isGameOver ) {
-      this.header.update(delta);
-    }
+    this.header.update(delta);
   }
 
+  /** To create header of the game. It has 2 counters:
+   * one for time, the second show flags available */
   createHeader() {
     const { header, flags } = this.viewConfig;
+
     this.header = new Header({ header, textures: this.resPack });
-    this.addChild(this.header);
-
-    this.header.y = -(( this.grid.height - this.header.height ) / 2 + 150);
-
+    this.header.on("menuClick", this.onMenuClick, this);
     this.header.updateTimeNumber();
+
     this.updateFlagsNumber(flags);
+    this.addChild(this.header);
   }
 
+  /** To react on user's actions and update header counter
+   * @param {Number} number - number of flags which is left */
   updateFlagsNumber(number) {
     this.header.updateFlagsNumber(number);
+  }
+
+  /** To react to a user's actions. As a user clicks on the menu
+   * we can have 2 options available */
+  onMenuClick() {
+    this.pause();
+
+    this.createPopup("menu", (name) => {
+      switch ( name ) {
+        case "restartGame": this.emit("restartGame");
+          break;
+        case "continueGame":
+          this.removePopup();
+          this.resume();
+          break;
+      }
+    });
+  }
+
+  /** To show pup-up at the end of the game as a user loses*/
+  showPopUp() {
+    this.pause();
+    this.createPopup(this.gameStatus, () => {
+      this.emit("restartGame");
+    });
+  }
+
+  /** To create popup by its name, so there can be some number of popups
+   * Use a callback function to make interactivity dynamic
+   * @param {String} name - name of popup type in config
+   * @param {Function} cb */
+  createPopup(name, cb) {
+    const { popups } = this.viewConfig;
+    const config = popups[ name ];
+    this.popUp = Popup.fromConfig(popups, config, cb);
+
+    this.addChild(this.popUp);
+  }
+
+  /** To remove pop-up */
+  removePopup() {
+    this.removeChild(this.popUp);
+    this.popUp = null;
   }
 
   /** To create actual grid of cells
@@ -101,6 +157,20 @@ export default class View extends Factory.Container {
     this.grid.cells.forEach(row => {
       row.forEach(cell => this.grid.addChild(cell));
     });
+  }
+
+  /** To pause the game. It removes all interactivity and stops the counter */
+  pause() {
+    this.isPause = true;
+    this.removeInteractivity();
+    this.header.removeInteractivity();
+  }
+
+  /** To resume the game */
+  resume() {
+    this.isPause = false;
+    this.addInteractivity();
+    this.header.addInteractivity();
   }
 
   /** Turn interactivity on for mobile devices and PC separately */
@@ -215,22 +285,12 @@ export default class View extends Factory.Container {
     });
   }
 
-  /** To disable view class at the end of the game */
-  gameOver(isWinStatus) {
+  /** To disable view class at the end of the game
+   * @param {String} gameStatus*/
+  gameOver(gameStatus) {
     this.removeInteractivity();
-    this.gameStatus = isWinStatus;
+    this.gameStatus = gameStatus;
     this.isGameOver = true;
-  }
-
-  /** To show pup-up at the end */
-  showPopUp() {
-    const { popup } = this.viewConfig;
-    this.popUp = new Popup(popup, this.gameStatus);
-    this.popUp.once("onButtonClick", () => {
-      this.emit("restartGame");
-    });
-
-    this.addChild(this.popUp);
   }
 
   /** To clean view data before destroying */

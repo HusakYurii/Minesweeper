@@ -1,6 +1,5 @@
 import { Emitter } from "../../../shared/sources/extensions";
 import Engine from "./engine";
-import { gameConfig, gameViewConfig } from "../../configs";
 
 export default class Controller extends Emitter {
   constructor() {
@@ -34,9 +33,11 @@ export default class Controller extends Emitter {
   }
 
   resize({ width, height }) {
-    const isLanscape = width > height;
+    const isLandscape = width > height;
+
     this.view.position.set(width / 2, height / 2);
-    this.view.rotation = isLanscape ? -Math.PI/2 : 0;
+    this.view.rotation = isLandscape ? -Math.PI / 2 : 0;
+    this.view.resize({ width, height });
   }
 
   update(delta) {
@@ -46,12 +47,15 @@ export default class Controller extends Emitter {
   run() {
     const { grid } = this.model;
     this.view.creteGrid(grid);
-    this.view.addInteractivity();
     this.view.on("flagRequested", this.onFlagRequested, this);
     this.view.on("clickOnCell", this.onClickOnCell, this);
     this.view.once("restartGame", this.onRestartGame, this);
 
     this.view.createHeader();
+    this.view.createPopup("start", () => {
+      this.view.resume();
+      this.view.removePopup();
+    });
   }
 
   onRestartGame() {
@@ -68,11 +72,11 @@ export default class Controller extends Emitter {
 
     this.model.toggleCellFlag(row, col);
 
-    if(this.model.flagsLeft < 0){
+    if ( this.model.flagsLeft < 0 ) {
       this.model.toggleCellFlag(row, col);
     } else {
       this.view.toggleCellFlag(row, col);
-      this.view.updateFlagsNumber(this.model.flagsLeft)
+      this.view.updateFlagsNumber(this.model.flagsLeft);
     }
   }
 
@@ -83,12 +87,12 @@ export default class Controller extends Emitter {
     const result = Engine.checkSelectedCell(collection, row, col);
 
     if ( result === Engine.MINE ) {
-      this.view.gameOver(false);
+      this.view.gameOver("lose");
       this.view.revealCells(this.model.allMines.flat());
     } else if ( this.model.isGameWon ) {
       this.model.updateCellsData(result);
       this.view.revealCells(result);
-      this.view.gameOver(false);
+      this.view.gameOver("win");
       this.view.flagMines(this.model.totFlaggedCells.flat());
     } else {
       this.model.updateCellsData(result);

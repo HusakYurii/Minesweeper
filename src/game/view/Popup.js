@@ -5,24 +5,32 @@ import { Factory } from "../../../shared/sources/libs";
  * */
 export default class Popup extends Factory.Container {
 
-  constructor({ button, ...popup }, isWinStatus) {
+  constructor({ popupBackground, popupStyles, text, position }) {
     super();
 
-    const status = isWinStatus ? "win" : "lose";
+    const background = Factory.createFromGraphics(popupBackground);
+    const popupText = Factory.createTextFromConfig(text, { position, ...popupStyles });
+    this.addChild(background, popupText);
+  }
 
-    const popupIcon = Factory.createFromGraphics(popup);
-    const popupText = Factory.createTextFromConfig(popup.text[ status ], popup.styles);
-    popupIcon.addChild(popupText);
+  /** Helper function to create popup from config
+   * @static
+   * @return {Popup} */
+  static fromConfig(common, rest, cb) {
+    const { popupBackground, popupStyles } = common;
+    const { text, position, buttons } = rest;
+    const popup = new Popup({ popupBackground, popupStyles, text, position });
 
-    const popupButton = Factory.createFromGraphics(button);
-    const buttonText = Factory.createTextFromConfig(button.text, button.styles);
-    popupButton.addChild(buttonText);
+    buttons.forEach(({ text, styles, event, ...button }) => {
+      const btn = Factory.createFromGraphics(button);
+      const txt = Factory.createTextFromConfig(text, styles);
+      btn.interactive = true;
+      btn.once("pointerdown", ()=> cb(event));
 
-    this.addChild(popupIcon, popupButton);
-
-    popupButton.interactive = true;
-    popupButton.once("pointerdown", () => {
-      this.emit("onButtonClick");
+      btn.addChild(txt);
+      popup.addChild(btn);
     });
+
+    return popup;
   }
 }

@@ -12,7 +12,7 @@ export default {
       "height": 100,
       "radius": 2,
       "color": 0x5c1e1a,
-      "position": {"x": 300,"y": 0},
+      "position": { "x": 300, "y": 0 }
     },
     "flagsCounter": {
       "type": "rect",
@@ -20,7 +20,7 @@ export default {
       "height": 100,
       "radius": 2,
       "color": 0x5c1e1a,
-      "position": {"x": -300,"y": 0},
+      "position": { "x": -300, "y": 0 }
     },
     "menuButton": {
       "type": "rect",
@@ -28,13 +28,13 @@ export default {
       "height": 100,
       "radius": 25,
       "color": 0x3d3af0,
-      "position": {"x": 0,"y": 0},
+      "position": { "x": 0, "y": 0 },
 
       "styles": {
         "fill": "#ffffff",
         "fontFamily": "Helvetica",
         "fontSize": 60,
-        "position": {"x": 0,"y": 0}
+        "position": { "x": 0, "y": 0 }
       },
       "text": "Menu"
     }
@@ -46,59 +46,136 @@ export default {
       "fontWeight": "bold"
     },
     "1": {
-      "fill": "#0328fc",
+      "fill": "#0328fc"
     },
     "2": {
-      "fill": "#3ec408",
+      "fill": "#3ec408"
     },
     "3": {
-      "fill": "#fa2828",
+      "fill": "#fa2828"
     },
     "4": {
-      "fill": "#06052e",
+      "fill": "#06052e"
     },
     "5": {
-      "fill": "#000000",
+      "fill": "#000000"
     }
   },
-  "popup": {
-    "type": "rect",
-    "width": 550,
-    "height": 700,
-    "radius": 25,
-    "color": 0xffffff,
-    "position": {"x": 0,"y": 0},
-
-    "button": {
+  "popups": {
+    "popupBackground": {
       "type": "rect",
-      "width": 400,
-      "height": 100,
+      "width": 550,
+      "height": 700,
       "radius": 25,
-      "color": 0x3d3af0,
-      "position": {"x": 0,"y": 200},
-
-      "styles": {
-        "fill": "#ffffff",
-        "fontFamily": "Helvetica",
-        "fontSize": 50,
-        "position": {"x": 0,"y": 0}
-      },
-      "text": "Try again?"
+      "color": 0xffffff,
+      "position": { "x": 0, "y": 0 }
     },
-
-    "styles": {
+    "popupStyles": {
       "align": "center",
       "breakWords": true,
       "fill": "#3d3af0",
       "fontFamily": "Helvetica",
       "fontSize": 60,
       "wordWrap": true,
-      "wordWrapWidth": 450,
-      "position": {"x": 0,"y": -100}
+      "wordWrapWidth": 450
     },
-    "text": {
-      "win": "Well done! You are great Minesweeper!",
-      "lose": "Sorry, you lost! But try again!"
+    "start": {
+      "text": "Main Menu",
+      "position": { "x": 0, "y": -100 },
+      "buttons": [ {
+        "type": "rect",
+        "width": 400,
+        "height": 100,
+        "radius": 25,
+        "color": 0x3d3af0,
+        "position": { "x": 0, "y": 200 },
+        "event": "startGame",
+        "styles": {
+          "fill": "#ffffff",
+          "fontFamily": "Helvetica",
+          "fontSize": 50,
+          "position": { "x": 0, "y": 0 }
+        },
+        "text": "Start!"
+      } ]
+    },
+    "lose": {
+      "text": "Sorry, you lost! But try again!",
+      "position": { "x": 0, "y": -100 },
+      "buttons": [ {
+        "type": "rect",
+        "width": 400,
+        "height": 100,
+        "radius": 25,
+        "color": 0x3d3af0,
+        "position": { "x": 0, "y": 200 },
+        "event": "restartGame",
+        "styles": {
+          "fill": "#ffffff",
+          "fontFamily": "Helvetica",
+          "fontSize": 50,
+          "position": { "x": 0, "y": 0 }
+        },
+        "text": "Try Again?"
+      } ]
+    },
+    "win": {
+      "text": "Well done! You are great Minesweeper!",
+      "position": { "x": 0, "y": -100 },
+      "buttons": [ {
+        "type": "rect",
+        "width": 400,
+        "height": 100,
+        "radius": 25,
+        "color": 0x3d3af0,
+        "position": { "x": 0, "y": 200 },
+        "event": "restartGame",
+        "styles": {
+          "fill": "#ffffff",
+          "fontFamily": "Helvetica",
+          "fontSize": 50,
+          "position": { "x": 0, "y": 0 }
+        },
+        "text": "Try Again?"
+      } ]
+    },
+    "menu": {
+      "text": "Here can be some information of rules",
+      "position": { "x": 0, "y": -130 },
+      "buttons": [
+        {
+          "type": "rect",
+          "width": 400,
+          "height": 100,
+          "radius": 25,
+          "color": 0x3d3af0,
+          "position": { "x": 0, "y": 200 },
+          "event": "restartGame",
+          "styles": {
+            "fill": "#ffffff",
+            "fontFamily": "Helvetica",
+            "fontSize": 50,
+            "position": { "x": 0, "y": 0 }
+          },
+          "text": "Exit To Menu"
+        },
+        {
+          "type": "rect",
+          "width": 400,
+          "height": 100,
+          "radius": 25,
+          "color": 0x3d3af0,
+          "position": { "x": 0, "y": 80 },
+          "event": "continueGame",
+          "styles": {
+            "fill": "#ffffff",
+            "fontFamily": "Helvetica",
+            "fontSize": 50,
+            "position": { "x": 0, "y": 0 }
+          },
+          "text": "Continue"
+        }
+      ]
     }
   }
-}
+};

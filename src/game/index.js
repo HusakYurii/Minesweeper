@@ -19,11 +19,14 @@ export default class Game {
     this.controller.on("restartGame", this.restartGame, this);
   }
 
-  /** As game is being restarted use original data again */
+  /** As game is being restarted use original data again.
+   * Dispatch dummy event to make LayoutManager does its work */
   restartGame() {
     this.useConfig(this.gameConfig);
     this.setResources(this.viewResources);
     this.run();
+    const event = new Event("resize");
+    window.dispatchEvent(event);
   }
 
   useConfig(config) {

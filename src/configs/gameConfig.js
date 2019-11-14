@@ -6,7 +6,7 @@ export default {
   "debuggerMode": true,
   "setGridManually": false,
   // basically it is a with of a square
-  "gridSize": 750,
+  "gridSize": 800,
   "defaultGrid": {
     "minesAmount": 10,
     "columns": 9,

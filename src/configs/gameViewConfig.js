@@ -80,7 +80,7 @@ export default {
       "wordWrapWidth": 450
     },
     "start": {
-      "text": "Main Menu",
+      "text": "Here can be some kind of main menu",
       "position": { "x": 0, "y": -100 },
       "buttons": [ {
         "type": "rect",
@@ -140,7 +140,7 @@ export default {
       } ]
     },
     "menu": {
-      "text": "Here can be some information of rules",
+      "text": "Here can be some information or rules",
       "position": { "x": 0, "y": -130 },
       "buttons": [
         {

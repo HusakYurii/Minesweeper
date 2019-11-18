@@ -86,16 +86,16 @@ export default class Controller extends Emitter {
     const { grid: { collection } } = this.model;
     const result = Engine.checkSelectedCell(collection, row, col);
 
+    this.model.updateCellsData(result);
+
     if ( result === Engine.MINE ) {
       this.view.gameOver("lose");
       this.view.revealCells(this.model.allMines.flat());
     } else if ( this.model.isGameWon ) {
-      this.model.updateCellsData(result);
       this.view.revealCells(result);
       this.view.gameOver("win");
       this.view.flagMines(this.model.totFlaggedCells.flat());
     } else {
-      this.model.updateCellsData(result);
       this.view.revealCells(result);
     }
   }

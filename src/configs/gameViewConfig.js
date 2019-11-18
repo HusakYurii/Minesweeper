@@ -64,8 +64,8 @@ export default {
   "popups": {
     "popupBackground": {
       "type": "rect",
-      "width": 550,
-      "height": 700,
+      "width": 600,
+      "height": 800,
       "radius": 25,
       "color": 0xffffff,
       "position": { "x": 0, "y": 0 }
@@ -75,9 +75,9 @@ export default {
       "breakWords": true,
       "fill": "#3d3af0",
       "fontFamily": "Helvetica",
-      "fontSize": 60,
+      "fontSize": 65,
       "wordWrap": true,
-      "wordWrapWidth": 450
+      "wordWrapWidth": 550
     },
     "start": {
       "text": "Here can be some kind of main menu",
@@ -85,55 +85,55 @@ export default {
       "buttons": [ {
         "type": "rect",
         "width": 400,
-        "height": 100,
+        "height": 120,
         "radius": 25,
         "color": 0x3d3af0,
-        "position": { "x": 0, "y": 200 },
+        "position": { "x": 0, "y": 300 },
         "event": "startGame",
         "styles": {
           "fill": "#ffffff",
           "fontFamily": "Helvetica",
-          "fontSize": 50,
+          "fontSize": 60,
           "position": { "x": 0, "y": 0 }
         },
         "text": "Start!"
       } ]
     },
     "lose": {
-      "text": "Sorry, you lost! But try again!",
+      "text": "Sorry, you lost! \nBut try again!",
       "position": { "x": 0, "y": -100 },
       "buttons": [ {
         "type": "rect",
         "width": 400,
-        "height": 100,
+        "height": 120,
         "radius": 25,
         "color": 0x3d3af0,
-        "position": { "x": 0, "y": 200 },
+        "position": { "x": 0, "y": 300 },
         "event": "restartGame",
         "styles": {
           "fill": "#ffffff",
           "fontFamily": "Helvetica",
-          "fontSize": 50,
+          "fontSize": 60,
           "position": { "x": 0, "y": 0 }
         },
         "text": "Try Again?"
       } ]
     },
     "win": {
-      "text": "Well done! You are great Minesweeper!",
+      "text": "Well done! \nYou are great Minesweeper!",
       "position": { "x": 0, "y": -100 },
       "buttons": [ {
         "type": "rect",
         "width": 400,
-        "height": 100,
+        "height": 120,
         "radius": 25,
         "color": 0x3d3af0,
-        "position": { "x": 0, "y": 200 },
+        "position": { "x": 0, "y": 300 },
         "event": "restartGame",
         "styles": {
           "fill": "#ffffff",
           "fontFamily": "Helvetica",
-          "fontSize": 50,
+          "fontSize": 60,
           "position": { "x": 0, "y": 0 }
         },
         "text": "Try Again?"
@@ -146,15 +146,15 @@ export default {
         {
           "type": "rect",
           "width": 400,
-          "height": 100,
+          "height": 120,
           "radius": 25,
           "color": 0x3d3af0,
-          "position": { "x": 0, "y": 200 },
+          "position": { "x": 0, "y": 300 },
           "event": "restartGame",
           "styles": {
             "fill": "#ffffff",
             "fontFamily": "Helvetica",
-            "fontSize": 50,
+            "fontSize": 60,
             "position": { "x": 0, "y": 0 }
           },
           "text": "Exit To Menu"
@@ -162,15 +162,15 @@ export default {
         {
           "type": "rect",
           "width": 400,
-          "height": 100,
+          "height": 120,
           "radius": 25,
           "color": 0x3d3af0,
-          "position": { "x": 0, "y": 80 },
+          "position": { "x": 0, "y": 150 },
           "event": "continueGame",
           "styles": {
             "fill": "#ffffff",
             "fontFamily": "Helvetica",
-            "fontSize": 50,
+            "fontSize": 60,
             "position": { "x": 0, "y": 0 }
           },
           "text": "Continue"

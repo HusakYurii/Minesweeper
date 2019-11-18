@@ -19,7 +19,48 @@ export default [
       {
         "name": "mine",
         "url": "./assets/mine.png"
+      },
+      {
+        "name": "zero",
+        "url": "./assets/zero.png"
+      },
+      {
+        "name": "one",
+        "url": "./assets/one.png"
+      },
+      {
+        "name": "two",
+        "url": "./assets/two.png"
+      },
+      {
+        "name": "three",
+        "url": "./assets/three.png"
+      },
+      {
+        "name": "four",
+        "url": "./assets/four.png"
+      },
+      {
+        "name": "five",
+        "url": "./assets/five.png"
+      },
+      {
+        "name": "six",
+        "url": "./assets/six.png"
+      },
+      {
+        "name": "seven",
+        "url": "./assets/seven.png"
+      },
+      {
+        "name": "eight",
+        "url": "./assets/eight.png"
+      },
+      {
+        "name": "nine",
+        "url": "./assets/nine.png"
       }
+
     ]
   }
 ];

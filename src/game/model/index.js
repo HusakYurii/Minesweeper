@@ -49,6 +49,10 @@ export default class Model {
 
   /** After engine has calculated data, update the model */
   updateCellsData(result = []){
+    if(typeof result === "string" ) {
+      return;
+    }
+
     result.forEach(val => {
       let cell = this.grid.collection[ val.row ][ val.col ];
       cell = Object.assign(cell, val);

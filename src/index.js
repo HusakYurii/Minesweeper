@@ -1,4 +1,4 @@
-import { gameConfig, layoutManagerConfig, applicationConfig, resourcesConfig } from "./configs";
+import { gameConfig, layoutManagerConfig, applicationConfig, resourcesConfig, gameViewConfig } from "./configs";
 import { LayoutManager, ResourceLoader } from "../shared/sources/libs";
 import { Application } from "../shared/sources/extensions";
 import Game from "./game";
@@ -10,7 +10,7 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 /* Create an instance of game, initialize it and set game config */
 const game = new Game();
 game.initialize();
-game.useConfig(gameConfig);
+game.useConfig({gameConfig, gameViewConfig});
 
 /* Create an instance of PIXI.Application. Use the game application config for it */
 const app = new Application(applicationConfig);

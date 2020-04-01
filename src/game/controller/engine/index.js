@@ -1,4 +1,4 @@
-import { getRndInt, isValid, isMine, isProtected } from "./helpers";
+import { getRndInt, isValid, isMine, isProtected } from "./helpers/index.js";
 
 /**
  * @class Engine

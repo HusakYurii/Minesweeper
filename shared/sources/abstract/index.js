@@ -1,4 +1,4 @@
-import ResPackage from "./ResPackage";
+import ResPackage from "./ResPackage.js";
 
 export {
   ResPackage

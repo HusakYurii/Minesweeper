@@ -1,5 +1,5 @@
-import { Loader, Emitter } from "../extensions/index";
-import { ResPackage } from "../abstract/index";
+import { Loader, Emitter } from "../extensions/index.js";
+import { ResPackage } from "../abstract/index.js";
 
 /**
  * @class ResourceLoader

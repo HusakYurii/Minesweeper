@@ -1,8 +1,8 @@
-import layoutManagerConfig from "./layoutManagerConfig";
-import applicationConfig from "./applicationConfig";
-import resourcesConfig from "./resourcesConfig";
-import gameViewConfig from "./gameViewConfig";
-import gameConfig from "./gameConfig";
+import layoutManagerConfig from "./layoutManagerConfig.js";
+import applicationConfig from "./applicationConfig.js";
+import resourcesConfig from "./resourcesConfig.js";
+import gameViewConfig from "./gameViewConfig.js";
+import gameConfig from "./gameConfig.js";
 
 export {
   layoutManagerConfig,

@@ -1,4 +1,4 @@
-import { Emitter } from "../extensions/index";
+import { Emitter } from "../extensions/index.js";
 
 /**
  * @class LayoutManager

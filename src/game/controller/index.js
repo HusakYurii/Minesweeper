@@ -1,5 +1,5 @@
-import { Emitter } from "../../../shared/sources/extensions";
-import Engine from "./engine";
+import { Emitter } from "../../../shared/sources/extensions/index.js";
+import Engine from "./engine/index.js";
 
 export default class Controller extends Emitter {
   constructor() {

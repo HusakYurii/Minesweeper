@@ -1,7 +1,7 @@
-import { Factory } from "../../../shared/sources/libs";
-import Cell from "./Cell";
-import Popup from "./Popup";
-import Header from "./Header";
+import { Factory } from "../../../shared/sources/libs/index.js";
+import Cell from "./Cell.js";
+import Popup from "./Popup.js";
+import Header from "./Header.js";
 
 /**
  * @class View

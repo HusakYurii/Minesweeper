@@ -1,4 +1,4 @@
-import CellModel from "./cellModel";
+import CellModel from "./cellModel/index.js";
 
 export default class Model {
   constructor() {

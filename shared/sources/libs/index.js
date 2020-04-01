@@ -1,6 +1,6 @@
-import ResourceLoader from "./ResourceLoader";
-import LayoutManager from "./LayoutManager";
-import Factory from "./Factory";
+import ResourceLoader from "./ResourceLoader.js";
+import LayoutManager from "./LayoutManager.js";
+import Factory from "./Factory.js";
 
 export {
   ResourceLoader,

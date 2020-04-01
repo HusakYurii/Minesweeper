@@ -1,7 +1,7 @@
-import { gameConfig, layoutManagerConfig, applicationConfig, resourcesConfig, gameViewConfig } from "./configs";
-import { LayoutManager, ResourceLoader } from "../shared/sources/libs";
-import { Application } from "../shared/sources/extensions";
-import Game from "./game";
+import { gameConfig, layoutManagerConfig, applicationConfig, resourcesConfig, gameViewConfig } from "./configs/index.js";
+import { LayoutManager, ResourceLoader } from "../shared/sources/libs/index.js";
+import { Application } from "../shared/sources/extensions/index.js";
+import Game from "./game/index.js";
 
 /* To prevent context menu for PC mouse right click
    because this event will be used to set a flag on the Minesweeper grid */

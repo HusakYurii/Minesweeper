@@ -1,6 +1,6 @@
-import Controller from "./controller";
-import Model from "./model";
-import View from "./view";
+import Controller from "./controller/index.js";
+import Model from "./model/index.js";
+import View from "./view/index.js";
 
 /** @class Game
  * Basically Game is a component with its own controller, model and view.

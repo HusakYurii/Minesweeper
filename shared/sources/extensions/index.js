@@ -1,10 +1,10 @@
-import Application from "./Application";
-import Container from "./Container";
-import Graphics from "./Graphics";
-import Emitter from "./Emitter";
-import Loader from "./Loader";
-import Sprite from "./Sprite";
-import Text from "./Text";
+import Application from "./Application.js";
+import Container from "./Container.js";
+import Graphics from "./Graphics.js";
+import Emitter from "./Emitter.js";
+import Loader from "./Loader.js";
+import Sprite from "./Sprite.js";
+import Text from "./Text.js";
 
 export {
   Application,

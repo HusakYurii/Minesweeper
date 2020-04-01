@@ -1,4 +1,4 @@
-import { Factory } from "../../../shared/sources/libs";
+import { Factory } from "../../../shared/sources/libs/index.js";
 
 /**
  * @class Cell

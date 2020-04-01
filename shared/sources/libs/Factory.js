@@ -3,7 +3,7 @@ import {
   Graphics,
   Sprite,
   Text
-} from "../extensions/index";
+} from "../extensions/index.js";
 
 /**
  * @static
